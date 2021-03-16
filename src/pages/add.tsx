@@ -43,7 +43,7 @@ export default function Add(props: RouteComponentProps) {
       </FormControl>
       <FormControl id="weight" isRequired mt={4}>
         <FormLabel>Peso</FormLabel>
-        <NumberInput>
+        <NumberInput min={0}>
           <NumberInputField name="weight" />
           <NumberInputStepper>
             <NumberIncrementStepper />
