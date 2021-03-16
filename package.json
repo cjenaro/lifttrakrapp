@@ -1,0 +1,28 @@
+{
+  "name": "gymtrack",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "@chakra-ui/icons": "^1.0.6",
+    "@chakra-ui/react": "^1.3.4",
+    "@emotion/react": "^11.1.5",
+    "@emotion/styled": "^11.1.5",
+    "@reach/router": "^1.3.4",
+    "framer-motion": "^3.10.5",
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0"
+  },
+  "devDependencies": {
+    "@types/reach__router": "^1.3.7",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@vitejs/plugin-react-refresh": "^1.3.1",
+    "prettier": "^2.2.1",
+    "typescript": "^4.1.2",
+    "vite": "^2.1.0"
+  }
+}
