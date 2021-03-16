@@ -5,6 +5,17 @@ const config: ThemeConfig = {
   useSystemColorMode: true,
 };
 
-const theme = extendTheme({ config });
+const theme = extendTheme({
+  config,
+  styles: {
+    global: {
+      'body > [role="group"] + [role="group"]': {
+        position: "absolute",
+        top: 0,
+        left: 0,
+      },
+    },
+  },
+});
 
 export default theme;
