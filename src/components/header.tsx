@@ -9,8 +9,7 @@ export default function Header() {
       alignItems="center"
       justifyContent="space-between"
       as="header"
-      py={5}
-      px={10}
+      p={4}
     >
       Gym Tracker
       <ColorMode />

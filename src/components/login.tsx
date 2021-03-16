@@ -32,25 +32,23 @@ export default function Login() {
   }
 
   return (
-    <Box>
-      <Box as="form" p={6} onSubmit={handleSubmit}>
-        <Heading size="lg" mb={4} textAlign="center">
-          Login
-        </Heading>
-        <FormControl id="email" isRequired mt={4}>
-          <FormLabel>Email</FormLabel>
-          <Input type="email" name="email" />
-          <FormErrorMessage>{error.email}</FormErrorMessage>
-        </FormControl>
-        <FormControl id="password" isRequired mt={4}>
-          <FormLabel>Contraseña</FormLabel>
-          <Input type="password" name="password" />
-          <FormErrorMessage>{error.password}</FormErrorMessage>
-        </FormControl>
-        <Button type="submit" mt={8} width="100%">
-          Ingresar &rarr;
-        </Button>
-      </Box>
+    <Box as="form" p={6} onSubmit={handleSubmit}>
+      <Heading size="lg" mb={4} textAlign="center">
+        Login
+      </Heading>
+      <FormControl id="email" isRequired mt={4}>
+        <FormLabel>Email</FormLabel>
+        <Input type="email" name="email" />
+        <FormErrorMessage>{error.email}</FormErrorMessage>
+      </FormControl>
+      <FormControl id="password" isRequired mt={4}>
+        <FormLabel>Contraseña</FormLabel>
+        <Input type="password" name="password" />
+        <FormErrorMessage>{error.password}</FormErrorMessage>
+      </FormControl>
+      <Button type="submit" mt={8} width="100%">
+        Ingresar &rarr;
+      </Button>
     </Box>
   );
 }
