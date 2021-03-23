@@ -1,0 +1,18 @@
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+
+[[redirects]]
+  from = "/*"
+  to = "/"
+  status = 200
+
+[build]
+  functions = "functions/"
+
+[dev]
+  framework = "#custom"
+  command = "yarn dev"
+  targetPort = 3000
+  port = 8888
+  publish = "dist"

@@ -12,12 +12,15 @@ import {
   Select,
 } from "@chakra-ui/react";
 import { RouteComponentProps } from "@reach/router";
+import useWeight from "../hooks/use-weight";
 
 export default function Weights(props: RouteComponentProps) {
   const [form, setForm] = React.useState({
-    exercise: 1,
-    reps: 1,
+    exercise: "1",
+    reps: "1",
   });
+
+  const { weight } = useWeight(form.exercise, form.reps);
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -27,7 +30,9 @@ export default function Weights(props: RouteComponentProps) {
 
   return (
     <Box>
-      <Heading size="lg">Ver Peso</Heading>
+      <Heading textAlign="center" size="lg">
+        Ver Peso
+      </Heading>
       <SimpleGrid gridTemplateColumns="1fr min-content" columnGap={4} mt={4}>
         <FormControl id="exercise" isRequired>
           <FormLabel>Ejercicio</FormLabel>
@@ -39,8 +44,8 @@ export default function Weights(props: RouteComponentProps) {
         <FormControl id="reps" isRequired>
           <FormLabel>Repeticiones</FormLabel>
           <NumberInput
-            onChange={(_, valueAsNumber) =>
-              setForm({ ...form, reps: valueAsNumber })
+            onChange={(valueAsString) =>
+              setForm({ ...form, reps: valueAsString })
             }
             value={form.reps}
             min={1}
@@ -64,7 +69,7 @@ export default function Weights(props: RouteComponentProps) {
           textAlign="center"
           my={20}
         >
-          100kg
+          {weight}kg
         </Button>
       </SimpleGrid>
     </Box>

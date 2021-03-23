@@ -4,7 +4,6 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
-  Input,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
@@ -14,13 +13,17 @@ import {
 } from "@chakra-ui/react";
 import { RouteComponentProps } from "@reach/router";
 import * as React from "react";
+import useExercises from "../hooks/use-exercises";
 
 export default function Add(props: RouteComponentProps) {
   const [isLoading, setLoading] = React.useState(false);
   const [error, setError] = React.useState({
     weight: "",
     exercise: "",
+    reps: "",
   });
+
+  const { data: exercises, isLoading: exerciseLoading } = useExercises();
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -32,7 +35,10 @@ export default function Add(props: RouteComponentProps) {
   }
   return (
     <Box as="form" onSubmit={handleSubmit}>
-      <Heading size="lg">Agregar Peso</Heading>
+      <pre>{JSON.stringify(exercises, null, 2)}</pre>
+      <Heading textAlign="center" size="lg">
+        Agregar Peso
+      </Heading>
       <FormControl id="exercise" isRequired mt={4}>
         <FormLabel>Ejercicio</FormLabel>
         <Select name="exercise">
@@ -51,6 +57,17 @@ export default function Add(props: RouteComponentProps) {
           </NumberInputStepper>
         </NumberInput>
         <FormErrorMessage>{error.weight}</FormErrorMessage>
+      </FormControl>
+      <FormControl id="reps" isRequired mt={4}>
+        <FormLabel>Repeticiones</FormLabel>
+        <NumberInput min={1}>
+          <NumberInputField name="reps" />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </NumberInput>
+        <FormErrorMessage>{error.reps}</FormErrorMessage>
       </FormControl>
       <Button
         type="submit"

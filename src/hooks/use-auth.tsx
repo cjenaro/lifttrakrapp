@@ -2,12 +2,16 @@ import * as React from "react";
 
 type User = {
   email: string;
+  password: string;
+  token?: string;
 };
 
 type AuthContextType = {
   user: User | undefined;
   login: (user: User) => void;
+  register: (user: User) => void;
   logout: () => void;
+  error: string;
 };
 
 function toVoid() {}
@@ -20,10 +24,50 @@ interface AuthProviderProperties {
 
 export function AuthProvider({ children }: AuthProviderProperties) {
   const [user, setUser] = React.useState<User | undefined>();
+  const [error, setError] = React.useState<string>("");
 
-  function login(user: User) {
-    console.log(user);
-    setUser(user);
+  async function login(user: User) {
+    const blob = await fetch("/.netlify/functions/login", {
+      method: "POST",
+      body: JSON.stringify({
+        email: user.email,
+        password: user.password,
+      }),
+    });
+
+    const res = await blob.json();
+
+    if (blob.ok) {
+      setError("");
+      setUser({
+        ...user,
+        token: res.token,
+      });
+    } else {
+      setError(res.message);
+    }
+  }
+
+  async function register(user: User) {
+    const blob = await fetch("/.netlify/functions/register", {
+      method: "POST",
+      body: JSON.stringify({
+        email: user.email,
+        password: user.password,
+      }),
+    });
+
+    const res = await blob.json();
+
+    if (blob.ok) {
+      setError("");
+      setUser({
+        ...user,
+        token: res.token,
+      });
+    } else {
+      setError(res.message);
+    }
   }
 
   function logout() {
@@ -31,7 +75,7 @@ export function AuthProvider({ children }: AuthProviderProperties) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, register, error }}>
       {children}
     </AuthContext.Provider>
   );

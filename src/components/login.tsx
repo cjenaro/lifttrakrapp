@@ -6,49 +6,168 @@ import {
   FormLabel,
   Heading,
   Input,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
 } from "@chakra-ui/react";
 import * as React from "react";
 import useAuth from "../hooks/use-auth";
 
 export default function Login() {
-  const { login } = useAuth();
-  const [error, setError] = React.useState({ email: "", password: "" });
+  const { login, register, error: authError } = useAuth();
+  const [error, setError] = React.useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
 
-  function handleSubmit(event: React.FormEvent) {
+  async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     const form = new FormData(event.target as HTMLFormElement);
     const email = form.get("email") as string;
     const password = form.get("password") as string;
+    setError({
+      email: "",
+      password: "",
+      confirmPassword: "",
+    });
 
     if (!email) {
       setError({ ...error, email: "Este campo es obligatiorio" });
+      return;
     }
 
     if (!password) {
       setError({ ...error, password: "Este campo es obligatiorio" });
+      return;
     }
 
-    login({ email });
+    login({ email, password });
+  }
+
+  function handleRegister(event: React.FormEvent) {
+    event.preventDefault();
+    const form = new FormData(event.target as HTMLFormElement);
+    const email = form.get("email") as string;
+    const password = form.get("password") as string;
+    const confirmPassword = form.get("confirmPassword") as string;
+    setError({
+      email: "",
+      password: "",
+      confirmPassword: "",
+    });
+
+    if (!email) {
+      setError({ ...error, email: "Este campo es obligatiorio" });
+      return;
+    }
+
+    if (!password) {
+      setError({ ...error, password: "Este campo es obligatiorio" });
+      return;
+    }
+
+    if (!confirmPassword) {
+      setError({ ...error, confirmPassword: "Este campo es obligatiorio" });
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError({ ...error, confirmPassword: "Las contraseñas no coinciden" });
+      return;
+    }
+
+    register({ email, password });
   }
 
   return (
-    <Box as="form" p={6} onSubmit={handleSubmit}>
-      <Heading size="lg" mb={4} textAlign="center">
-        Login
-      </Heading>
-      <FormControl id="email" isRequired mt={4}>
-        <FormLabel>Email</FormLabel>
-        <Input type="email" name="email" />
-        <FormErrorMessage>{error.email}</FormErrorMessage>
-      </FormControl>
-      <FormControl id="password" isRequired mt={4}>
-        <FormLabel>Contraseña</FormLabel>
-        <Input type="password" name="password" />
-        <FormErrorMessage>{error.password}</FormErrorMessage>
-      </FormControl>
-      <Button type="submit" mt={8} width="100%">
-        Ingresar &rarr;
-      </Button>
-    </Box>
+    <Tabs>
+      <TabList>
+        <Tab>
+          <Heading size="lg" textAlign="center">
+            Iniciar Sesión
+          </Heading>
+        </Tab>
+        <Tab>
+          <Heading size="lg" textAlign="center">
+            Registrar
+          </Heading>
+        </Tab>
+      </TabList>
+      <TabPanels>
+        <TabPanel>
+          <Box as="form" p={6} onSubmit={handleSubmit}>
+            <FormControl
+              id="email"
+              isRequired
+              mt={4}
+              isInvalid={Boolean(error.email)}
+            >
+              <FormLabel>Email</FormLabel>
+              <Input type="email" name="email" />
+              <FormErrorMessage>{error.email}</FormErrorMessage>
+            </FormControl>
+            <FormControl
+              id="password"
+              isRequired
+              mt={4}
+              isInvalid={Boolean(error.password)}
+            >
+              <FormLabel>Contraseña</FormLabel>
+              <Input type="password" name="password" />
+              <FormErrorMessage>{error.password}</FormErrorMessage>
+            </FormControl>
+            <Button type="submit" mt={8} width="100%">
+              Ingresar &rarr;
+            </Button>
+          </Box>
+          <FormControl isInvalid={Boolean(authError)}>
+            <FormErrorMessage>{authError}</FormErrorMessage>
+          </FormControl>
+        </TabPanel>
+        <TabPanel>
+          <Box as="form" p={6} onSubmit={handleRegister}>
+            <FormControl
+              id="email"
+              isRequired
+              mt={4}
+              isInvalid={Boolean(error.email)}
+            >
+              <FormLabel>Email</FormLabel>
+              <Input type="email" name="email" />
+              <FormErrorMessage>{error.email}</FormErrorMessage>
+            </FormControl>
+            <FormControl
+              id="password"
+              isRequired
+              mt={4}
+              isInvalid={Boolean(error.password)}
+            >
+              <FormLabel>Contraseña</FormLabel>
+              <Input type="password" name="password" />
+              <FormErrorMessage>{error.password}</FormErrorMessage>
+            </FormControl>
+            <FormControl
+              id="confirmPassword"
+              isRequired
+              mt={4}
+              isInvalid={Boolean(error.confirmPassword)}
+            >
+              <FormLabel>Confirmar Contraseña</FormLabel>
+              <Input type="password" name="confirmPassword" />
+              <FormErrorMessage>{error.confirmPassword}</FormErrorMessage>
+            </FormControl>
+            <Button type="submit" mt={8} width="100%">
+              Registrarse &rarr;
+            </Button>
+          </Box>
+          <FormControl isInvalid={Boolean(authError)}>
+            <FormErrorMessage>{authError}</FormErrorMessage>
+          </FormControl>
+        </TabPanel>
+      </TabPanels>
+    </Tabs>
   );
 }
