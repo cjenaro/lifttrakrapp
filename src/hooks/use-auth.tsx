@@ -1,9 +1,18 @@
 import * as React from "react";
+import { useMutation } from "react-query";
 
 type User = {
   email: string;
   password: string;
   token?: string;
+};
+
+type Error = {
+  message: string;
+};
+
+type Token = {
+  token: string;
 };
 
 type AuthContextType = {
@@ -16,6 +25,30 @@ type AuthContextType = {
 
 function toVoid() {}
 
+async function loginFN(user: User) {
+  const blob = await fetch("/.netlify/functions/login", {
+    method: "POST",
+    body: JSON.stringify({
+      email: user.email,
+      password: user.password,
+    }),
+  });
+
+  return await blob.json();
+}
+
+async function registerFN(user: User) {
+  const blob = await fetch("/.netlify/functions/register", {
+    method: "POST",
+    body: JSON.stringify({
+      email: user.email,
+      password: user.password,
+    }),
+  });
+
+  return await blob.json();
+}
+
 const AuthContext = React.createContext<AuthContextType | undefined>(undefined);
 
 interface AuthProviderProperties {
@@ -23,52 +56,25 @@ interface AuthProviderProperties {
 }
 
 export function AuthProvider({ children }: AuthProviderProperties) {
+  const afterMutation = {
+    onSuccess(data: Token, vars: User) {
+      setError("");
+      setUser({
+        ...vars,
+        token: data.token,
+      });
+    },
+
+    onError(err: Error) {
+      setError(err.message);
+    },
+  };
+
+  const { mutate: login } = useMutation(loginFN, afterMutation);
+  const { mutate: register } = useMutation(registerFN, afterMutation);
+
   const [user, setUser] = React.useState<User | undefined>();
   const [error, setError] = React.useState<string>("");
-
-  async function login(user: User) {
-    const blob = await fetch("/.netlify/functions/login", {
-      method: "POST",
-      body: JSON.stringify({
-        email: user.email,
-        password: user.password,
-      }),
-    });
-
-    const res = await blob.json();
-
-    if (blob.ok) {
-      setError("");
-      setUser({
-        ...user,
-        token: res.token,
-      });
-    } else {
-      setError(res.message);
-    }
-  }
-
-  async function register(user: User) {
-    const blob = await fetch("/.netlify/functions/register", {
-      method: "POST",
-      body: JSON.stringify({
-        email: user.email,
-        password: user.password,
-      }),
-    });
-
-    const res = await blob.json();
-
-    if (blob.ok) {
-      setError("");
-      setUser({
-        ...user,
-        token: res.token,
-      });
-    } else {
-      setError(res.message);
-    }
-  }
 
   function logout() {
     setUser(undefined);

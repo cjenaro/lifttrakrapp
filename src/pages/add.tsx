@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { RouteComponentProps } from "@reach/router";
 import * as React from "react";
-import useExercises from "../hooks/use-exercises";
+import useExercises, { Exercise } from "../hooks/use-exercises";
 
 export default function Add(props: RouteComponentProps) {
   const [isLoading, setLoading] = React.useState(false);
@@ -33,17 +33,20 @@ export default function Add(props: RouteComponentProps) {
       setLoading(false);
     }, 1000);
   }
+
   return (
     <Box as="form" onSubmit={handleSubmit}>
-      <pre>{JSON.stringify(exercises, null, 2)}</pre>
       <Heading textAlign="center" size="lg">
         Agregar Peso
       </Heading>
       <FormControl id="exercise" isRequired mt={4}>
         <FormLabel>Ejercicio</FormLabel>
         <Select name="exercise">
-          <option value={1}>Press de banco</option>
-          <option value={2}>Press militar</option>
+          {exercises?.map((exercise: Exercise) => (
+            <option value={exercise.id} key={exercise.id}>
+              {exercise.name}
+            </option>
+          ))}
         </Select>
         <FormErrorMessage>{error.exercise}</FormErrorMessage>
       </FormControl>
@@ -73,8 +76,8 @@ export default function Add(props: RouteComponentProps) {
         type="submit"
         mt={8}
         width="100%"
-        loadingText="Enviando"
-        isLoading={isLoading}
+        loadingText={isLoading ? "Enviando" : "Cargando"}
+        isLoading={isLoading || exerciseLoading}
       >
         Confirmar
       </Button>
