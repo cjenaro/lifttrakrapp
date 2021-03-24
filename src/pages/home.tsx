@@ -6,7 +6,7 @@ import { Link as RLink, RouteComponentProps } from "@reach/router";
 
 export default function Home(props: RouteComponentProps) {
   return (
-    <SimpleGrid columns={1} height="100%" rowGap={6}>
+    <SimpleGrid columns={1} height="100%" rowGap={6} overflow="hidden">
       <Button
         height="100%"
         textTransform="uppercase"
