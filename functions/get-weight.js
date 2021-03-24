@@ -20,7 +20,7 @@ exports.handler = async (event) => {
       return {
         statusCode: 200,
         body: JSON.stringify({
-          weight: latest?.weight,
+          weight: latest.weight,
         }),
       };
     }

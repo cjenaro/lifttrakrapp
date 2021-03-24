@@ -7,7 +7,7 @@ async function getExercises(event) {
 
   return {
     statusCode: 200,
-    body: JSON.stringify(data?.exercises),
+    body: JSON.stringify(data ? data.exercises : {}),
   };
 }
 
