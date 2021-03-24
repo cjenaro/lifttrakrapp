@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 import useAuth from "./use-auth";
 
 function calculateWeight(raw: string, reps: string) {
-  return Number(raw) * Number(reps);
+  return (Number(raw) * (100 - (Number(reps) - 1) * 5)) / 100;
 }
 
 export default function useWeight(exercise: string, reps: string) {
