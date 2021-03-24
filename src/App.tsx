@@ -5,7 +5,7 @@ import Layout from "./components/layout";
 
 function App() {
   return (
-    <Grid templateRows="auto 1fr auto" minH="100vh">
+    <Grid templateRows="auto 1fr auto" minH="100vh" overflow="hidden">
       <Layout>
         <Router />
       </Layout>
