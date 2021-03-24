@@ -55,7 +55,7 @@ export default function Weights(props: RouteComponentProps) {
             }
             value={form.reps}
             min={1}
-            max={15}
+            max={20}
             step={1}
           >
             <NumberInputField name="reps" />
