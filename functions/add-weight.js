@@ -14,7 +14,6 @@ exports.handler = async (event) => {
   if (!reps || !weight || !exercise || !user_id)
     throw new Error("Faltan parametros");
 
-  console.log(event.headers.authorization);
   const blob = await fetch(`${process.env.BASE_API_URL}weight`, {
     method: "POST",
     body: JSON.stringify({
