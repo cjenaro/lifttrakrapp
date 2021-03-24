@@ -1,6 +1,8 @@
 import * as React from "react";
-import { Box } from "@chakra-ui/react";
+import { Box, Img } from "@chakra-ui/react";
 import ColorMode from "./color-mode";
+import icon from "../icon.png";
+import { Link } from "@reach/router";
 
 export default function Header() {
   return (
@@ -11,7 +13,9 @@ export default function Header() {
       as="header"
       p={4}
     >
-      Gym Tracker
+      <Link to="/">
+        <Img src={icon} alt="Beetle Icon." height="50" />
+      </Link>
       <ColorMode />
     </Box>
   );

@@ -5,7 +5,7 @@ function calculateWeight(raw: string, reps: string) {
   return Number(raw) * Number(reps);
 }
 
-export default async function useWeight(exercise: string, reps: string) {
+export default function useWeight(exercise: string, reps: string) {
   //   const { user } = useAuth();
   //   const row = await fetch(
   //     `https://sheet.best/api/sheets/cf969697-682a-40e3-bad4-d54803eeeacf/email/${user?.email}`
@@ -24,5 +24,5 @@ export default async function useWeight(exercise: string, reps: string) {
 
   //   const weight = calculateWeight(raw, reps);
 
-  return { weight: 100 };
+  return { weight: 100 + Number(reps) * 2 };
 }
