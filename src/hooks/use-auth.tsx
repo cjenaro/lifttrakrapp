@@ -4,6 +4,7 @@ import { useMutation } from "react-query";
 type User = {
   email: string;
   password: string;
+  id?: string;
   token?: string;
 };
 
@@ -11,8 +12,9 @@ type Error = {
   message: string;
 };
 
-type Token = {
+type Res = {
   token: string;
+  user_id: string;
 };
 
 type AuthContextType = {
@@ -57,11 +59,12 @@ interface AuthProviderProperties {
 
 export function AuthProvider({ children }: AuthProviderProperties) {
   const afterMutation = {
-    onSuccess(data: Token, vars: User) {
+    onSuccess(data: Res, vars: User) {
       setError("");
       setUser({
         ...vars,
         token: data.token,
+        id: data.user_id,
       });
     },
 

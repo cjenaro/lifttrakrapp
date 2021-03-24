@@ -33,5 +33,5 @@ exports.handler = async (event) => {
     expiresIn: Math.floor(Date.now() / 1000) + 60 * 60 * 60,
   });
 
-  return { statusCode: 200, body: JSON.stringify({ token }) };
+  return { statusCode: 200, body: JSON.stringify({ token, user_id: user.id }) };
 };
