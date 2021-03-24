@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useQuery } from "react-query";
 import useAuth from "./use-auth";
 
 function calculateWeight(raw: string, reps: string) {
@@ -6,23 +6,23 @@ function calculateWeight(raw: string, reps: string) {
 }
 
 export default function useWeight(exercise: string, reps: string) {
-  //   const { user } = useAuth();
-  //   const row = await fetch(
-  //     `https://sheet.best/api/sheets/cf969697-682a-40e3-bad4-d54803eeeacf/email/${user?.email}`
-  //   )
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //       return data;
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
+  const { user } = useAuth();
+  const { data, error, isLoading } = useQuery(["weight", exercise], () =>
+    fetch("/.netlify/functions/get-weight", {
+      method: "POST",
+      body: JSON.stringify({
+        exercise,
+        user: user?.id,
+      }),
+      headers: {
+        authorization: `Bearer ${user?.token}`,
+      },
+    }).then((blob) => blob.json())
+  );
 
-  //   console.log(row);
-  //   const raw = row[exercise];
-
-  //   const weight = calculateWeight(raw, reps);
-
-  return { weight: 100 + Number(reps) * 2 };
+  return {
+    error,
+    weight: calculateWeight(data?.weight, reps),
+    isLoading,
+  };
 }

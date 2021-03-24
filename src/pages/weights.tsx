@@ -22,7 +22,7 @@ export default function Weights(props: RouteComponentProps) {
     reps: "1",
   });
 
-  const { weight } = useWeight(form.exercise, form.reps);
+  const { weight, error, isLoading } = useWeight(form.exercise, form.reps);
   const { data: exercises } = useExercises();
 
   function handleChange(
@@ -67,15 +67,21 @@ export default function Weights(props: RouteComponentProps) {
         </FormControl>
 
         <Button
-          fontSize="7xl"
+          fontSize={!weight ? "xl" : "8xl"}
           boxSize="max"
           p={5}
           w="100%"
           gridColumn="-1/1"
           textAlign="center"
+          whiteSpace="break-spaces"
           my={20}
+          isLoading={isLoading}
         >
-          <Weight to={weight} />
+          {!weight ? (
+            "No hay un peso para este ejercicio todavía"
+          ) : (
+            <Weight to={weight} />
+          )}
         </Button>
       </SimpleGrid>
     </Box>
@@ -93,5 +99,5 @@ function Weight({ to }: WeightCounterProps) {
   x.set(to);
   x.onChange((n) => setValue(n));
 
-  return <motion.span>{value.toFixed(2)}kg</motion.span>;
+  return <motion.span>{value.toFixed(0)}kg</motion.span>;
 }
