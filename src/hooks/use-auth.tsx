@@ -23,6 +23,7 @@ type AuthContextType = {
   register: (user: User) => void;
   logout: () => void;
   error: string;
+  isLoading: boolean;
 };
 
 function toVoid() {}
@@ -73,8 +74,14 @@ export function AuthProvider({ children }: AuthProviderProperties) {
     },
   };
 
-  const { mutate: login } = useMutation(loginFN, afterMutation);
-  const { mutate: register } = useMutation(registerFN, afterMutation);
+  const { mutate: login, isLoading: loginLoading } = useMutation(
+    loginFN,
+    afterMutation
+  );
+  const { mutate: register, isLoading: registerLoading } = useMutation(
+    registerFN,
+    afterMutation
+  );
 
   const [user, setUser] = React.useState<User | undefined>();
   const [error, setError] = React.useState<string>("");
@@ -83,8 +90,12 @@ export function AuthProvider({ children }: AuthProviderProperties) {
     setUser(undefined);
   }
 
+  const isLoading = registerLoading || loginLoading;
+
   return (
-    <AuthContext.Provider value={{ user, login, logout, register, error }}>
+    <AuthContext.Provider
+      value={{ user, login, logout, register, error, isLoading }}
+    >
       {children}
     </AuthContext.Provider>
   );

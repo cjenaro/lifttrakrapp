@@ -16,7 +16,7 @@ import * as React from "react";
 import useAuth from "../hooks/use-auth";
 
 export default function Login() {
-  const { login, register, error: authError } = useAuth();
+  const { login, register, error: authError, isLoading } = useAuth();
   const [error, setError] = React.useState({
     email: "",
     password: "",
@@ -119,7 +119,7 @@ export default function Login() {
               <Input type="password" name="password" />
               <FormErrorMessage>{error.password}</FormErrorMessage>
             </FormControl>
-            <Button type="submit" mt={8} width="100%">
+            <Button type="submit" mt={8} width="100%" isLoading={isLoading}>
               Ingresar &rarr;
             </Button>
           </Box>
@@ -159,7 +159,7 @@ export default function Login() {
               <Input type="password" name="confirmPassword" />
               <FormErrorMessage>{error.confirmPassword}</FormErrorMessage>
             </FormControl>
-            <Button type="submit" mt={8} width="100%">
+            <Button type="submit" mt={8} width="100%" isLoading={isLoading}>
               Registrarse &rarr;
             </Button>
           </Box>
