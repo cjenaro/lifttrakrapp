@@ -9,7 +9,7 @@ exports.handler = async (event) => {
 
   const hashPassword = await bcrypt.hash(password, 10);
 
-  const { type } = JSON.parse(process.env.HASURA_GRAPHQL_JWT_SECRET);
+  const { type, key } = JSON.parse(process.env.HASURA_GRAPHQL_JWT_SECRET);
 
   const response = await fetch(`${process.env.BASE_API_URL}users`, {
     method: "POST",
@@ -27,8 +27,17 @@ exports.handler = async (event) => {
   }
 
   const user = await response.json();
+  const hasuraUser = {
+    ...user,
+    "https://hasura.io/jwt/claims": {
+      "x-hasura-allowed-roles": ["user"],
+      "x-hasura-default-role": "user",
+      "x-hasura-user-id": `${user.id}`,
+      "x-hasura-user-email": user.email,
+    },
+  };
 
-  const token = jwt.sign(user, process.env.HASURA_GRAPHQL_JWT_SECRET, {
+  const token = jwt.sign(hasuraUser, key, {
     algorithm: type,
     expiresIn: Math.floor(Date.now() / 1000) + 60 * 60 * 60,
   });
