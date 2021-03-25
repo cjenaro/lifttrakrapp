@@ -1,3 +1,4 @@
+import { CheckIcon } from "@chakra-ui/icons";
 import { Box, Heading } from "@chakra-ui/layout";
 import {
   Button,
@@ -25,6 +26,7 @@ interface AddWeightProps {
 }
 
 export default function Add(props: RouteComponentProps) {
+  const [hasSubmitted, setHasSubmitted] = React.useState(false);
   const { user } = useAuth();
   const [error, setError] = React.useState({
     weight: "",
@@ -50,6 +52,17 @@ export default function Add(props: RouteComponentProps) {
     const exercise = form.get("exercise") as string;
     const weight = form.get("weight") as string;
     const reps = form.get("reps") as string;
+
+    if (!exercise) {
+      setError({ ...error, exercise: "Este campo es obligatorio" });
+    }
+    if (!weight) {
+      setError({ ...error, weight: "Este campo es obligatorio" });
+    }
+    if (!reps) {
+      setError({ ...error, reps: "Este campo es obligatorio" });
+    }
+
     if (user && user?.id) {
       mutate({
         exercise,
@@ -57,6 +70,8 @@ export default function Add(props: RouteComponentProps) {
         reps,
         user_id: user?.id,
       });
+
+      setHasSubmitted(true);
     }
   }
 
@@ -104,8 +119,10 @@ export default function Add(props: RouteComponentProps) {
         width="100%"
         loadingText={isLoading ? "Enviando" : "Cargando"}
         isLoading={isLoading || exerciseLoading}
+        rightIcon={hasSubmitted ? <CheckIcon /> : undefined}
+        colorScheme={hasSubmitted ? "green" : undefined}
       >
-        Confirmar
+        {!hasSubmitted ? "Confirmar" : "Cargar otro"}
       </Button>
     </Box>
   );
