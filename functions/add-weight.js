@@ -5,6 +5,9 @@ function calcWeight(weight, reps) {
   const CONSTANT = 0.0333;
   const w = Number(weight);
   const r = Number(reps);
+
+  if (r === 1) return Math.round(w);
+
   return Math.round(CONSTANT * w * r + w);
 }
 
